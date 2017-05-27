@@ -1,0 +1,1477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+<!-- Regla saludo -->
+<category>
+  <pattern>hola</pattern>
+  <template>Hola, ¿necesitas algo?</template>
+</category>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--   REGLAS PARA FOMENTAR UNA EJECUCIÓN LINEAL POR TOPICS    -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~- -->
+
+<category>
+  <pattern>(me) (quiero gustaria) [agreg añad introdu]+ ^ [contact person amig]+ ^</pattern>
+  <template>
+  <think><set name = "topic">agregar_contacto</set></think>
+  Dime su apellido
+  </template>
+</category>
+
+<!-- Regla para saber cuantos contactos tengo -->
+<category>
+  <pattern>^ cuanto+ ^ [contact person amig]+ ^</pattern>
+  <template>
+    <think>
+      <set var="num"><srai>COUNT <readkeys>nombres</readkeys></srai></set>
+      <condition var="num">
+        <li value="0">
+          <set var="explicacion">Eres un forever alone no tienes amigos</set>
+        </li>
+        <li>
+          <set var="explicacion">Numero de contactos existentes <get var="num"></get></set>
+        </li>
+      </condition>
+    </think>
+    <get var="explicacion"></get>
+  </template>
+</category>
+
+<!-- Regla que lista todos los nombres de los contactos -->
+<category>
+  <pattern>^ list+ ^ [contact person amig]+ ^</pattern>
+  <template>
+    <think>
+      <set var="contactos"><readkeys>nombres</readkeys></set>
+    </think>
+    Tus contactos son <get var="contactos"></get>
+  </template>
+</category>
+
+<!-- Regla que lista todos los nombres de los contactos -->
+<category>
+  <pattern>^ listamelos ^</pattern>
+  <template>
+    <think>
+      <set var="contactos"><readkeys>nombres</readkeys></set>
+    </think>
+    Tus contactos son <get var="contactos"></get>
+  </template>
+</category>
+
+<!-- Regla para borrar un contacto -->
+<category>
+  <pattern>[borr elimin suprim olvid]+ ^ [contact person amig]+ ^</pattern>
+  <template>
+    <think>
+      <set name="topic">borrar_contacto</set>
+    </think>
+    Dime su apellido para borrarlo
+  </template>
+</category>
+
+<!-- Regla para borrar un contacto -->
+<category>
+  <pattern>(me) [gustar quier dese esper]+ ^ [borr elimin suprim olvid]+ ^ [contact person amig]+ ^</pattern>
+  <template>
+    <think>
+      <set name="topic">borrar_contacto</set>
+    </think>
+    Dime su apellido para borrarlo
+  </template>
+</category>
+
+<!-- Regla para modificar un contacto -->
+<category>
+  <pattern>[modifica cambia altera]+ ^ [contact person amig]+ ^</pattern>
+  <template>
+  <think>
+    <set name = "topic">modificar_contacto</set>
+  </think>
+    Dime el apellido de la persona a modificar
+  </template>
+</category>
+
+<!-- Regla para modificar un contacto -->
+<category>
+  <pattern>^ (me) [gustar quier dese esper]+ ^ [modifica cambia altera]+ ^ [contact person amig]+ ^</pattern>
+  <template>
+  <think>
+    <set name = "topic">modificar_contacto</set>
+  </think>
+    Dime el apellido de la persona a modificar
+  </template>
+</category>
+
+<!-- Regla para buscar un contacto -->
+<category>
+  <pattern>[busc revis]+ ^ [contact person amig]+ ^</pattern>
+  <template>
+  <think>
+    <set name = "topic">buscar</set>
+  </think>
+  Cual es su apellido de la persona a buscar?
+  </template>
+</category>
+
+<!-- Regla para buscar un contacto -->
+<category>
+  <pattern>^ (me) [gustar quier dese esper]+ ^ [busc revis]+ ^ [contact person amig]+ ^</pattern>
+  <template>
+  <think>
+    <set name = "topic">buscar</set>
+  </think>
+  Cual es su apellido de la persona a buscar?
+  </template>
+</category>
+
+<!-- Regla para agregar un nuevo evento -->
+<category>
+  <pattern>^ [agreg añad introdu+]+ ^ event+ ^</pattern>
+  <template>
+  <think>
+    <set name = "topic">agregar_evento</set>
+  </think>
+  Dime el nombre del evento a agregar
+  </template>
+</category>
+
+<!-- Regla para agregar un nuevo evento -->
+<category>
+  <pattern>^ (me) [gustar quier dese esper]+ ^ [agreg añad introdu+]+ ^ event+ ^</pattern>
+  <template>
+  <think>
+    <set name = "topic">agregar_evento</set>
+  </think>
+  Dime el nombre del evento a agregar
+  </template>
+</category>
+
+<!-- Regla para Modificar un nuevo evento -->
+<category>
+  <pattern>[modifica cambia altera]+ ^ event+ ^</pattern>
+  <template>
+  <think>
+    <set name = "topic">modificar_evento</set>
+  </think>
+    Dime la fecha del evento a modificar
+  </template>
+</category>
+
+<!-- Regla para Modificar un nuevo evento -->
+<category>
+  <pattern>^ (me) [gustar quier dese esper]+ ^ [modifica cambia altera]+ ^ event+ ^</pattern>
+  <template>
+  <think>
+    <set name = "topic">modificar_evento</set>
+  </think>
+    Dime la fecha del evento a modificar
+  </template>
+</category>
+
+<!-- Regla para borrar un nuevo evento -->
+<category>
+  <pattern>[borr elimin suprim olvid]+ ^ event+ ^</pattern>
+  <template>
+  <think>
+    <set name = "topic">borrar_evento</set>
+  </think>
+  Dime la fecha del evento a borrar
+  </template>
+</category>
+
+<!-- Regla para borrar un nuevo evento -->
+<category>
+  <pattern>^ (me) [gustar quier dese esper]+ ^ [borr elimin suprim olvid]+ ^ event+ ^</pattern>
+  <template>
+  <think>
+    <set name = "topic">borrar_evento</set>
+  </think>
+  Dime la fecha del evento a borrar
+  </template>
+</category>
+
+<!-- Regla para contar los evento -->
+<category>
+  <pattern>^ (di)+ ^ cuanto+ ^ event+ ^</pattern>
+  <template>
+  <think>
+    <set name = "topic">contar_eventos</set>
+  </think>
+  Dime la fecha para contar sus eventos
+  </template>
+</category>
+
+
+<!-- Regla para listar todos los eventos de una fecha -->
+<category>
+  <pattern>^ list+ ^ event+ ^</pattern>
+  <template>
+  <think>
+    <set name = "topic">listar_eventos</set>
+  </think>
+  Dime la fecha para listar todos tus eventos
+  </template>
+</category>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                            FIN                            -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                      TOPIC AGREGAR                         -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<topic name = "agregar_contacto">
+
+  <!-- Regla para decidir si existe o no el contacto -->
+  <category>
+    <pattern>*</pattern>
+    <that>Dime su apellido</that>
+    <template>
+      <think>
+        <set name="apellido"><srai>ponerbarrabaja <star/></srai></set>
+        <set var="hay"><srai>COUNT <readkeys>nombres</readkeys></srai></set>
+        <condition var="hay">
+          <li value="0">
+            <set var="explicacion">Dime su nombre</set>
+          </li>
+          <li>
+            <set var="existe"><srai>FINDITEM <get name="apellido"></get> IN <readkeys>nombres</readkeys></srai></set>
+            <condition var="existe">
+              <li value="0">
+                <set var="explicacion">Dime su nombre</set>
+                <set name="apellido"><srai>ponerbarrabaja <star/></srai></set>
+              </li>
+              <li>
+                <set var="explicacion">El contacto ya existe</set>
+              </li>
+            </condition>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para recoger un nombre -->
+  <category>
+    <pattern>*</pattern>
+    <that>Dime su nombre</that>
+    <template>
+      <think>
+        <set var="nombre"><srai>ponerbarrabaja <star/></srai></set>
+        <addtomap>
+          <name>nombres</name>
+          <key><get name="apellido"></get></key>
+          <value><get var="nombre"></get></value>
+        </addtomap>
+        <set var="explicacion">Dime su domicilio</set>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+
+  <!-- Regla para recoger el domicilio -->
+  <category>
+    <pattern>*</pattern>
+    <that>Dime su domicilio</that>
+    <template>
+      <think>
+        <set var="domicilio"><srai>ponerbarrabaja <star/></srai></set>
+        <addtomap>
+          <name>direcciones</name>
+          <key><get name="apellido"></get></key>
+          <value><get var="domicilio"></get></value>
+        </addtomap>
+        <set var="explicacion">Dime su num telefono</set>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para recoger el numero telefono y guardar contacto -->
+  <category>
+    <pattern>*</pattern>
+    <that>Dime su num telefono</that>
+    <template>
+      <think>
+        <set var="telefono"><star/></set>
+        <addtomap>
+          <name>telefonos</name>
+          <key><get name="apellido"></get></key>
+          <value><get var="telefono"></get></value>
+        </addtomap>
+        <set var="explicacion">Contacto guardado algo mas?</set>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para cuando se introduce un apellido que ya existe -->
+
+
+</topic>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                            FIN                            -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                     TOPIC BORRAR                          -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<topic name="borrar_contacto">
+
+  <!-- Regla para asegurar borrar -->
+  <category>
+    <pattern>*</pattern>
+    <that>Dime su apellido para borrarlo</that>
+    <template>
+      <think>
+        <set name="nombre_borrar"><srai>ponerbarrabaja <star/></srai></set>
+        <set var="hay"><srai>COUNT <readkeys>nombres</readkeys></srai></set>
+        <condition var="hay">
+          <li value="0">
+            <set var="explicacion">Lo siento pero no tienes contactos para borrar</set>
+          </li>
+          <li>
+          <set var="existe"><srai>FINDITEM <get name="nombre_borrar"></get> IN <readkeys>nombres</readkeys></srai></set>
+            <condition var="existe">
+              <li value="0">
+                <set var="explicacion">No existe no puedo borrarlo</set>
+              </li>
+              <li>
+                <set var="explicacion">Seguro que quiere borrarlo</set>
+              </li>
+            </condition>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla que finalmente borra en cada map -->
+  <category>
+    <pattern>*</pattern>
+    <that>Seguro que quiere borrarlo</that>
+    <template>
+      <think>
+        <set var="respuesta"><star/></set>
+        <condition var="respuesta">
+          <li value="SI">
+            <set var="explicacion">Borrado</set>
+            <removefrommap><name>nombres</name><key><get name="nombre_borrar"></get></key></removefrommap>
+            <removefrommap><name>telefonos</name><key><get name="nombre_borrar"></get></key></removefrommap>
+            <removefrommap><name>direcciones</name><key><get name="nombre_borrar"></get></key></removefrommap>
+          </li>
+          <li>
+            <set var="explicacion">No lo borrado no te preocupes </set>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+</topic>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                            FIN                            -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                  TOPIC MODIFICAR Contacto                          -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<topic name = "modificar_contacto">
+
+  <!-- Regla para confirmar que quiere modificar -->
+  <category>
+    <pattern>*</pattern>
+    <that>Dime el apellido de la persona a modificar</that>
+    <template>
+      <think>
+        <set var="hay"><srai>COUNT <readkeys>nombres</readkeys></srai></set>
+        <condition var="hay">
+          <li value="0">
+            <set var="explicacion">No puedo borrar nada porque no tienes contactos</set>
+          </li>
+          <li>
+            <set name="nombre_modificar"><srai>ponerbarrabaja <star/></srai></set>
+            <set var="existe"><srai>FINDITEM <get name="nombre_modificar"></get> IN <readkeys>nombres</readkeys></srai></set>
+            <condition var="existe">
+              <li value="0">
+                <set var="explicacion">No puedo modificarlo no existe</set>
+              </li>
+              <li>
+                <set var="explicacion">Quiere modificar su direccion o su telefono</set>
+              </li>
+            </condition>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para captar el dato a modificar -->
+  <category>
+    <pattern>*</pattern>
+    <that>Quiere modificar su direccion o su telefono</that>
+    <template>
+      <think>
+        <set name="tipo_mod"><star/></set>
+        <set var="explicacion">Dime el nuevo valor del campo</set>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para modificar el dato captado -->
+  <category>
+    <pattern>*</pattern>
+    <that>Dime el nuevo valor del campo</that>
+    <template>
+      <think>
+        <condition name="tipo_mod">
+          <li value="telefono">
+            <set var="valor_nuevo"><star/></set>
+            <modifymap>
+              <name>telefonos</name>
+              <key><get name="nombre_modificar"></get></key>
+              <value><get var="valor_nuevo"></get></value>
+            </modifymap>
+            <set var="explicacion">Telefono modificado</set>
+          </li>
+          <li>
+            <set var="valor_nuevo"><srai>ponerbarrabaja <star/></srai></set>
+            <modifymap>
+              <name>direcciones</name>
+              <key><get name="nombre_modificar"></get></key>
+              <value><get var="valor_nuevo"></get></value>
+            </modifymap>
+            <set var="explicacion">Direccion modificada</set>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+</topic>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                            FIN                            -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                      TOPIC BUSCAR                         -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<topic name = "buscar">
+
+  <!-- Regla para confirmar que quiere modificar -->
+  <category>
+    <pattern>*</pattern>
+    <that>Cual es su apellido de la persona a buscar</that>
+    <template>
+      <think>
+        <set name="nombre_buscar"><srai>ponerbarrabaja <star/></srai></set>
+        <set var="hay"><srai>COUNT <readkeys>nombres</readkeys></srai></set>
+        <condition var="hay">
+          <li value="0">
+            <set var="explicacion">Tu estado es forever alone no tienes amigos para buscar</set>
+          </li>
+          <li>
+            <set var="existe"><srai>FINDITEM <get name="nombre_buscar"></get> IN <readkeys>nombres</readkeys></srai></set>
+            <condition var="existe">
+              <li value="0">
+                <set var="explicacion">No existe</set>
+              </li>
+              <li>
+                <set var="explicacion">Quiere saber el nombre telefono o su direccion?</set>
+              </li>
+            </condition>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para captar el dato a buscar -->
+  <category>
+    <pattern>*</pattern>
+    <that>Quiere saber el nombre telefono o su direccion</that>
+    <template>
+      <think>
+        <set var="tipo_bus"><star/></set>
+        <condition var="tipo_bus">
+          <li value="Nombre">
+            <set var="explicacion">Nombre de <srai>quitarespacios <get name="nombre_buscar"></get></srai> es: <map name="nombres"><get name="nombre_buscar"></get></map></set>
+          </li>
+          <li value="Telefono">
+            <set var="explicacion">Telefono de <srai>quitarespacios <get name="nombre_buscar"></get></srai> es: <map name="telefonos"><get name="nombre_buscar"></get></map></set>
+          </li>
+          <li value="Direccion">
+            <set var="explicacion">Direccion de <srai>quitarespacios <get name="nombre_buscar"></get></srai> es: <srai>quitarespacios <map name="direcciones"><get name="nombre_buscar"></get></map></srai></set>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+</topic>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                            FIN                            -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                TOPIC AGREGAR EVENTO                       -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<topic name = "agregar_evento">
+
+  <!-- Regla para capturar nombre del evento -->
+  <category>
+    <pattern>*</pattern>
+    <that>Dime el nombre del evento a agregar</that>
+    <template>
+      <think>
+        <set name="nombre_evento"><srai>ponerbarrabaja <star/></srai></set>
+        <set var="explicacion">Dime la fecha del evento</set>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para capturar fecha del evento -->
+  <category>
+    <pattern>*</pattern>
+    <that>Dime la fecha del evento</that>
+    <template>
+      <think>
+        <set name="fecha"><star/></set>
+        <set var="fecha_separada"><srai>deletrea <get var="fecha"></get></srai></set>
+        <set var="fecha_sin_barras"><srai>quitarbarras <get var="hora_separada"></get></srai></set>
+        <set var="fecha_final"><srai>quitarespacios <get var="fecha_sin_barras"></get></srai></set>
+
+        <set var="fecha_valida"><srai>VALIDDATE <srai>quitarbarras <star/></srai></srai></set>
+        <condition var="fecha_valida">
+          <li value="yes">
+            <set var="explicacion">Dime la hora del evento</set>
+          </li>
+          <li value="no">
+            <set var="explicacion">La hora no es valida</set>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para capturar hora del evento -->
+  <category>
+    <pattern>*</pattern>
+    <that>Dime la hora del evento</that>
+    <template>
+      <think>
+        <set var="hora"><star/></set>
+        <set var="hora_separada"> <srai>deletrea <get var="hora"></get></srai></set>
+        <set var="hora_sin_puntos"> <srai>quitarpuntos <get var="hora_separada"></get> </srai></set>
+        <set name="hora_final"> <srai>quitarespacios <get var="hora_sin_puntos"></get></srai></set>
+        <set name="fecha_hora"><srai>ponerbarrabaja <srai>ADDITEM <get name="fecha"></get> IN <get name="hora_final"></get></srai></srai></set>
+
+        <set var="hora_valida"><srai>VALIDTIME <srai>quitarpuntos <star/></srai></srai></set>
+        <condition var="hora_valida">
+          <li value="yes">
+            <set var="hay"><srai>COUNT <readkeys>eventos</readkeys></srai></set>
+            <condition var="hay">
+              <li value="0">
+                <set var="explicacion">Asociar un contacto a un evento</set>
+              </li>
+              <li>
+                <set var="existe"><srai>FINDITEM <get name="fecha_hora"></get> IN <readkeys>eventos</readkeys></srai></set>
+                <condition var="existe">
+                  <li value="0">
+                    <set var="explicacion">Asociar un contacto a un evento</set>
+                  </li>
+                  <li>
+                    <set var="explicacion">Lo siento pero ya estas ocupado en ese momento</set>
+                  </li>
+                </condition>
+              </li>
+            </condition>
+          </li>
+          <li value="no">
+            <set var="explicacion">Hora invalida lo siento</set>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para capturar si se quiere asociar contacto del evento -->
+  <category>
+    <pattern>*</pattern>
+    <that>Asociar un contacto a un evento</that>
+    <template>
+      <think>
+        <set var="asociar_contacto"><star/></set>
+        <condition var="asociar_contacto">
+          <li value="si">
+            <set var="explicacion">Apellido del contacto</set>
+          </li>
+          <li value="no">
+            <addtomap>
+              <name>eventos</name>
+              <key><get name="fecha_hora"></get></key>
+              <value><get name="nombre_evento"></get></value>
+            </addtomap>
+
+            <set var="tam_fechashora"><srai>COUNT <readkeys>fechahoras</readkeys></srai></set>
+            <condition var="tam_fechashora">
+              <li value="0">
+                <addtomap>
+                  <name>fechahoras</name>
+                  <key><get name="fecha"></get></key>
+                  <value><get name="hora_final"></get></value>
+                </addtomap>
+              </li>
+              <li>
+                <set var="existe0"><srai>FINDITEM <get name="fecha"></get> IN <readkeys>fechahoras</readkeys></srai></set>
+                <condition var="existe0">
+                  <li value="0">
+                    <addtomap>
+                      <name>fechahoras</name>
+                      <key><get name="fecha"></get></key>
+                      <value><get name="hora_final"></get></value>
+                    </addtomap>
+                  </li>
+                  <li>
+                    <set var="anterior_valor2"><map name="fechahoras"><get name="fecha"></get></map></set>
+                    <set var="concatenadas_horas"><srai>ADDITEM <get var="anterior_valor2"></get> IN <get name="hora_final"></get></srai></set>
+                    <modifymap>
+                      <name>fechahoras</name>
+                      <key><get name="fecha"></get></key>
+                      <value><get var="concatenadas_horas"></get></value>
+                    </modifymap>
+                  </li>
+                </condition>
+              </li>
+            </condition>
+            <set var="explicacion">Evento agregado</set>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para decidir si el contacto existe y debe asociarse -->
+  <category>
+    <pattern>*</pattern>
+    <that>Apellido del contacto</that>
+    <template>
+      <think>
+        <addtomap>
+          <name>eventos</name>
+          <key><get name="fecha_hora"></get></key>
+          <value><get name="nombre_evento"></get></value>
+        </addtomap>
+
+        <set var="tam_fechashora"><srai>COUNT <readkeys>fechahoras</readkeys></srai></set>
+        <condition var="tam_fechashora">
+          <li value="0">
+            <addtomap>
+              <name>fechahoras</name>
+              <key><get name="fecha"></get></key>
+              <value><get name="hora_final"></get></value>
+            </addtomap>
+          </li>
+          <li>
+            <set var="existe0"><srai>FINDITEM <get name="fecha"></get> IN <readkeys>fechahoras</readkeys></srai></set>
+            <condition var="existe0">
+              <li value="0">
+                <addtomap>
+                  <name>fechahoras</name>
+                  <key><get name="fecha"></get></key>
+                  <value><get name="hora_final"></get></value>
+                </addtomap>
+              </li>
+              <li>
+                <set var="anterior_valor2"><map name="fechahoras"><get name="fecha"></get></map></set>
+                <set var="concatenadas_horas"><srai>ADDITEM <get var="anterior_valor2"></get> IN <get name="hora_final"></get></srai></set>
+                <modifymap>
+                  <name>fechahoras</name>
+                  <key><get name="fecha"></get></key>
+                  <value><get var="concatenadas_horas"></get></value>
+                </modifymap>
+              </li>
+            </condition>
+          </li>
+        </condition>
+
+        <set var="apellido_evento"><srai>ponerbarrabaja <star/></srai></set>
+        <set var="vacio"><srai>COUNT <readkeys>nombres</readkeys></srai></set>
+        <condition var="vacio">
+          <li value="0">
+            <set var="explicacion">No hay contactos con los que asociar</set></li>
+          <li>
+            <set var="existe"><srai>FINDITEM <get var="apellido_evento"></get> IN <readkeys>nombres</readkeys></srai></set>
+            <condition var="existe">
+              <li value="0">
+                <set var="explicacion">No existe el contacto en la agenda</set>
+              </li>
+              <li>
+                <set var="vacio2"><srai>COUNT <readkeys>evenper</readkeys></srai></set>
+                <condition var="vacio2">
+                  <li value="0">
+                    <addtomap>
+                      <name>evenper</name>
+                      <key><get name="fecha_hora"></get></key>
+                      <value><get var="apellido_evento"></get></value>
+                    </addtomap>
+                    <set var="explicacion">Contacto asociado asociar otro contacto</set>
+                  </li>
+                  <li>
+                    <set var="existe2"><srai>FINDITEM <get name="fecha_hora"></get> IN <readkeys>evenper</readkeys></srai></set>
+                    <condition var="existe2">
+                      <li value="0">
+                        <addtomap>
+                          <name>evenper</name>
+                          <key><get name="fecha_hora"></get></key>
+                          <value><get var="apellido_evento"></get></value>
+                        </addtomap>
+                      </li>
+                      <li>
+                        <set var="anterior_valor"><map name="evenper"><get name="fecha_hora"></get></map></set>
+                        <set var="concatenados_nombres"><srai>ADDITEM <get var="anterior_valor"></get> IN <get var="apellido_evento"></get></srai></set>
+                        <modifymap>
+                          <name>evenper</name>
+                          <key><get name="fecha_hora"></get></key>
+                          <value><get var="concatenados_nombres"></get></value>
+                        </modifymap>
+                        <set var="explicacion">Contacto asociado asociar otro contacto</set>
+                      </li>
+                    </condition>
+                    <set var="explicacion">Contacto asociado asociar otro contacto</set>
+                  </li>
+                </condition>
+              </li>
+            </condition>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para ayudar a volver a introducir un  -->
+  <category>
+    <pattern>*</pattern>
+    <that>Contacto asociado asociar otro contacto</that>
+    <template>
+      <think>
+        <set var="respuesta"><star/></set>
+        <condition var="respuesta">
+          <li value="SI">
+            <set var="explicacion">Apellido del contacto</set>
+          </li>
+          <li>
+            <set var="explicacion">Evento guardado</set>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+</topic>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                            FIN                            -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                TOPIC Modificar EVENTO                     -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<topic name = "modificar_evento">
+
+  <!-- Regla modificar un evento  -->
+  <category>
+    <pattern>*</pattern>
+    <that>Dime la fecha del evento a modificar</that>
+    <template>
+      <think>
+        <set name="fecha"><star/></set>
+        <set var="fecha_valida"><srai>VALIDDATE <srai>quitarbarras <star/></srai></srai></set>
+        <condition var="fecha_valida">
+          <li value="yes">
+            <set var="existen_cosas"><srai>COUNT <readkeys>eventos</readkeys></srai></set>
+            <condition var="existen_cosas">
+              <li value="0">
+                <set var="explicacion">Lo siento no se puede modificar nada</set>
+              </li>
+              <li>
+                <set var="explicacion">Dime la hora del evento</set>
+              </li>
+            </condition>
+          </li>
+          <li value="no">
+            <set var="explicacion">La hora no es valida</set>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para capturar la hora del evento a borrar -->
+  <category>
+    <pattern>*</pattern>
+    <that>Dime la hora del evento</that>
+    <template>
+      <think>
+        <set var="hora"><star/></set>
+        <set var="hora_separada"> <srai>deletrea <get var="hora"></get></srai></set>
+        <set var="hora_sin_puntos"> <srai>quitarpuntos <get var="hora_separada"></get> </srai></set>
+        <set name="hora_final"> <srai>quitarespacios <get var="hora_sin_puntos"></get></srai></set>
+        <set name="fecha_hora"><srai>ponerbarrabaja <srai>ADDITEM <get name="fecha"></get> IN <get name="hora_final"></get></srai></srai></set>
+
+        <set var="hora_valida"><srai>VALIDTIME <srai>quitarpuntos <star/></srai></srai></set>
+        <condition var="hora_valida">
+          <li value="yes">
+            <set var="existen_eventos_fecha_hora"><srai>FINDITEM <get name="fecha_hora"></get> IN <readkeys>eventos</readkeys></srai></set>
+            <condition var="existen_eventos_fecha_hora">
+              <li value="0">
+                <set var="explicacion">Lo siento no existe ningun evento con esa fecha</set>
+              </li>
+              <li>
+                <set var="explicacion">Quiere modificar titulo fecha hora o lista de contactos</set>
+              </li>
+            </condition>
+          </li>
+          <li value="no">
+            <set var="explicacion">La hora no es valida</set>
+          </li>
+        </condition>
+
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para cazar lo que se quiere modificar y pedir fecha-->
+  <category>
+    <pattern>*</pattern>
+    <that>Quiere modificar titulo fecha hora o lista de contactos</that>
+    <template>
+      <think>
+        <set name="elemento_modificar"><star/></set>
+        <condition name="elemento_modificar">
+        <li value="titulo">
+          <set var="explicacion">Dime el nuevo nombre del evento</set> <!-- B -->
+        </li>
+        <li value="fecha">
+          <set var="explicacion">Dime la nueva fecha del evento</set> <!-- N -->
+        </li>
+        <li value="hora">
+          <set var="explicacion">Dime la nueva hora del evento</set> <!-- N -->
+        </li>
+        <li value="contactos">
+          <set var="explicacion">Agregar o borrar contacto</set>  <!-- B -->
+        </li>
+        <li>
+          <set var="explicacion">No le he entendido</set>
+        </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para modificar las personas de un evento -->
+  <category>
+    <pattern>*</pattern>
+    <that>Agregar o borrar contacto</that>
+    <template>
+      <think>
+        <set name="accion_mod_contactos"><star/></set>
+        <condition name="accion_mod_contactos">
+          <li value="agregar">
+            <set var="explicacion">Apellido para agregar al evento</set>
+          </li>
+          <li value="borrar">
+            <set var="explicacion">Apellido para borrar del evento</set>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para añadir un contacto -->
+  <category>
+    <pattern>*</pattern>
+    <that>Apellido para agregar al evento</that>
+    <template>
+      <think>
+        <set var="tam_contactos"><srai>COUNT <readkeys>nombres</readkeys></srai></set>
+        <condition var="tam_contactos">
+          <li value="0">
+            <set var="explicacion">Lo siento pero no tienes contactos para asociar</set>
+          </li>
+          <li>
+            <set var="existe_contacto"><srai>FINDITEM <srai>quitarespacios <star/></srai> IN <readkeys>nombres</readkeys></srai></set>
+            <condition var="existe_contacto">
+              <li value="0">
+                <set var="explicacion">Lo siento pero no tienes a ese contacto</set>
+              </li>
+              <li>
+                <set var="anterior_valor"><map name="evenper"><get name="fecha_hora"></get></map></set>
+                <set var="concatenados_nombres"><srai>ADDITEM <get var="anterior_valor"></get> IN <star/></srai></set>
+                <modifymap>
+                  <name>evenper</name>
+                  <key><get name="fecha_hora"></get></key>
+                  <value><get var="concatenados_nombres"></get></value>
+                </modifymap>
+                <set var="explicacion">Contacto asociado asociar otro contacto</set>
+              </li>
+            </condition>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para "buble" entre reglas -->
+  <category>
+    <pattern>*</pattern>
+    <that>Contacto asociado asociar otro contacto</that>
+    <template>
+      <think>
+        <set var="decision"><star/></set>
+        <condition var="decision">
+          <li value="si">
+            <set var="explicacion">Apellido para agregar al evento</set>
+          </li>
+          <li value="no">
+            <set var="explicacion">Evento modificado</set>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para borrar un contacto -->
+  <category>
+    <pattern>*</pattern>
+    <that>Apellido para borrar del evento</that>
+    <template>
+      <think>
+        <set var="tam_contactos"><srai>COUNT <readkeys>nombres</readkeys></srai></set>
+        <condition var="tam_contactos">
+          <li value="0">
+            <set var="explicacion">No existen contactos en tu agenda </set>
+          </li>
+          <li>
+            <set var="nombre_buscar"><srai>ponerbarrabaja <star/></srai></set>
+            <set var="existe_contacto"><srai>FINDITEM <get var="nombre_buscar"></get> IN <readkeys>nombres</readkeys></srai></set>
+            <condition var="existe_contacto">
+              <li value="0">
+                <set var="explicacion">Lo siento pero no tienes a ese contacto</set>
+              </li>
+              <li>
+                <set var="anterior_valor"><map name="evenper"><get name="fecha_hora"></get></map></set>
+                <set var="nuevos_nombres"><srai>REMOVEITEM <get var="existe_contacto"></get> IN <get var="anterior_valor"></get></srai></set>
+                <modifymap>
+                  <name>evenper</name>
+                  <key><get name="fecha_hora"></get></key>
+                  <value><get var="nuevos_nombres"></get></value>
+                </modifymap>
+                <set var="explicacion">Contacto borrado borrar otro contacto</set>
+              </li>
+            </condition>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para modificar nombre del evento-->
+  <category>
+    <pattern>*</pattern>
+    <that>Dime el nuevo nombre del evento</that>
+    <template>
+      <think>
+        <set var="titulo_mod"><srai>ponerbarrabaja <star/></srai></set>
+        <modifymap>
+          <name>eventos</name>
+          <key><get name="fecha_hora"></get></key>
+          <value><get var="titulo_mod"></get></value>
+        </modifymap>
+        <set var="explicacion">Titulo modificado</set>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para "buble" entre reglas -->
+  <category>
+    <pattern>*</pattern>
+    <that>Contacto borrado borrar otro contacto</that>
+    <template>
+      <think>
+        <set var="decision"><star/></set>
+        <condition var="decision">
+          <li value="si">
+            <set var="explicacion">Apellido para borrar del evento</set>
+          </li>
+          <li value="no">
+            <set var="explicacion">Evento modificado</set>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+
+  <!-- Regla para capturar fecha a modificar de un evento -->
+  <category>
+    <pattern>*</pattern>
+    <that>Dime la nueva fecha del evento</that>
+    <template>
+      <think>
+        <set var="fecha_valida"><srai>VALIDDATE <srai>quitarbarras <star/></srai></srai></set>
+        <condition var="fecha_valida">
+          <li value="yes">
+            <set var="nueva_fecha"><star/></set>
+            <!-- Map eventos -->
+            <set var="hay_eventos"><srai>COUNT <readkeys>eventos</readkeys></srai></set>
+            <condition var="hay_eventos">
+              <li value="0">
+                <set var="explicacion">No existen eventos con esa fecha</set>
+              </li>
+              <li>
+                <set var="pos_evento"><srai>FINDITEM <get name="fecha_hora"></get> IN <readkeys>eventos</readkeys></srai></set>
+                <condition var="pos_evento">
+                  <li value="0">
+                    <set var="explicacion">Lo siento no existen ese evento</set>
+                  </li>
+                  <li>
+                    <set var="nueva_fecha_hora"><srai>ponerbarrabaja <srai>ADDITEM <get var="nueva_fecha"></get> IN <get name="hora_final"></get></srai></srai></set>
+                    <set var="antiguo_nombre_evento"><map name="eventos"><get name="fecha_hora"></get></map></set>
+
+                    <removefrommap>
+                      <name>eventos</name>
+                      <key><get name="fecha_hora"></get></key>
+                    </removefrommap>
+                    <addtomap>
+                      <name>eventos</name>
+                      <key><get var="nueva_fecha_hora"></get></key>
+                      <value><get var="antiguo_nombre_evento"></get></value>
+                    </addtomap>
+
+                    <set var="antiguas_horas_evento"><map name="fechahoras"><get name="fecha"></get></map></set>
+                    <removefrommap>
+                      <name>fechahoras</name>
+                      <key><get name="fecha"></get></key>
+                    </removefrommap>
+                    <addtomap>
+                      <name>fechahoras</name>
+                      <key><get var="nueva_fecha"></get></key>
+                      <value><get var="antiguas_horas_evento"></get></value>
+                    </addtomap>
+
+                    <set var="hay_personas_eventos"><srai>COUNT <readkeys>evenper</readkeys></srai></set>
+                    <condition var="hay_personas_eventos">
+                      <li value="0">
+                      </li>
+                      <li>
+                        <set var="pos_fecha_personas"><srai>FINDITEM <get name="fecha"></get></srai></set>
+                        <condition var="pos_fecha_personas">
+                          <li value="0"></li>
+                          <li>
+                            <set var="antiguas_personas"><map name="evenper"><get name="fecha_hora"></get></map></set>
+                            <removefrommap>
+                              <name>evenper</name>
+                              <key><get name="fecha_hora"></get></key>
+                            </removefrommap>
+                            <addtomap>
+                              <name>evenper</name>
+                              <key><get var="nueva_fecha_hora"></get></key>
+                              <value><get var="antiguas_personas"></get></value>
+                            </addtomap>
+                          </li>
+                        </condition>
+                      </li>
+                    </condition>
+                    <set var="explicacion">Evento modificado</set>
+                  </li>
+                </condition>
+              </li>
+            </condition>
+          </li>
+          <li value="no">
+            <set var="explicacion">La hora no es valida</set>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+  <!-- Regla para capturar hora a modificar de un evento -->
+  <category>
+    <pattern>*</pattern>
+    <that>Dime la nueva hora del evento</that>
+    <template>
+      <think>
+        <set var="hora_introducida"><star/></set>
+        <set var="hora_nueva"><srai>quitarespacios <srai>quitarpuntos <get var="hora_introducida"></get></srai></srai></set>
+        <set var="fecha_hora_nueva"><srai>ponerbarrabaja <srai>ADDITEM <get name="fecha"></get> IN <get var="hora_nueva"></get></srai></srai></set>
+        <set var="hay_eventos"><srai>COUNT <readkeys>eventos</readkeys></srai></set>
+        <set var="nueva_fecha"><star/></set>
+
+        <set var="hora_valida"><srai>VALIDTIME <srai>quitarpuntos <star/></srai></srai></set>
+        <condition var="hora_valida">
+          <li value="yes">
+            <set var="hay_eventos"><srai>COUNT <readkeys>eventos</readkeys></srai></set>
+            <condition var="hay_eventos">
+              <li value="0">
+                <set var="explicacion">No existen eventos con esa fecha</set>
+              </li>
+              <li>
+                <set var="pos_evento"><srai>FINDITEM <get name="fecha_hora"></get> IN <readkeys>eventos</readkeys></srai></set>
+                <condition var="pos_evento">
+                  <li value="0">
+                    <set var="explicacion">Lo siento no existen ese evento</set>
+                  </li>
+                  <li>
+                    <set var="nueva_fecha_hora"><srai>ponerbarrabaja <srai>ADDITEM <get var="nueva_fecha"></get> IN <get name="hora_final"></get></srai></srai></set>
+                    <set var="antiguo_nombre_evento"><map name="eventos"><get name="fecha_hora"></get></map></set>
+                    <removefrommap>
+                      <name>eventos</name>
+                      <key><get name="fecha_hora"></get></key>
+                    </removefrommap>
+
+                    <addtomap>
+                      <name>eventos</name>
+                      <key><get var="nueva_fecha_hora"></get></key>
+                      <value><get var="antiguo_nombre_evento"></get></value>
+                    </addtomap>
+
+                    <set var="antiguas_horas_evento"><map name="fechahoras"><get name="fecha"></get></map></set>
+                    <removefrommap>
+                      <name>fechahoras</name>
+                      <key><get name="fecha"></get></key>
+                    </removefrommap>
+                    <addtomap>
+                      <name>fechahoras</name>
+                      <key><get var="nueva_fecha"></get></key>
+                      <value><get var="antiguas_horas_evento"></get></value>
+                    </addtomap>
+
+                    <set var="hay_personas_eventos"><srai>COUNT <readkeys>evenper</readkeys></srai></set>
+                    <condition var="hay_personas_eventos">
+                      <li value="0">
+                      </li>
+                      <li>
+                        <set var="pos_fecha_personas"><srai>FINDITEM <get name="fecha"></get></srai></set>
+                        <condition var="pos_fecha_personas">
+                          <li value="0"></li>
+                          <li>
+                            <set var="antiguas_personas"><map name="evenper"><get name="fecha_hora"></get></map></set>
+                            <removefrommap>
+                              <name>evenper</name>
+                              <key><get name="fecha_hora"></get></key>
+                            </removefrommap>
+                            <addtomap>
+                              <name>evenper</name>
+                              <key><get var="nueva_fecha_hora"></get></key>
+                              <value><get var="antiguas_personas"></get></value>
+                            </addtomap>
+                          </li>
+                        </condition>
+                      </li>
+                    </condition>
+                    <set var="explicacion">Evento modificado</set>
+                  </li>
+                </condition>
+              </li>
+            </condition>
+          </li>
+          <li value="no">
+            <set var="explicacion">La hora no es valida</set>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+</topic>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                            FIN                            -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                   TOPIC BORRAR EVENTO                     -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<topic name = "borrar_evento">
+
+<!-- Regla para capturar la fecha del evento a borrar -->
+<category>
+  <pattern>*</pattern>
+  <that>Dime la fecha del evento a borrar</that>
+  <template>
+    <think>
+      <set name="fecha"><star/></set>
+      <set var="fecha_valida"><srai>VALIDDATE <srai>quitarbarras <star/></srai></srai></set>
+      <condition var="fecha_valida">
+        <li value="yes">
+          <set var="existen_cosas"><srai>COUNT <readkeys>eventos</readkeys></srai></set>
+          <condition var="existen_cosas">
+            <li value="0">
+              <set var="explicacion">Lo siento pero hay nada que borrar</set>
+            </li>
+            <li>
+              <set var="explicacion">Dime la hora del evento</set>
+            </li>
+          </condition>
+        </li>
+        <li value="no">
+          <set var="explicacion">La hora no es valida</set>
+        </li>
+      </condition>
+    </think>
+    <get var="explicacion"></get>
+  </template>
+</category>
+
+<!-- Regla para capturar la hora del evento a borrar -->
+<category>
+  <pattern>*</pattern>
+  <that>Dime la hora del evento</that>
+  <template>
+    <think>
+      <set var="hora"><star/></set>
+      <set var="hora_separada"> <srai>deletrea <get var="hora"></get></srai></set>
+      <set var="hora_sin_puntos"> <srai>quitarpuntos <get var="hora_separada"></get> </srai></set>
+      <set var="hora_final"> <srai>quitarespacios <get var="hora_sin_puntos"></get></srai></set>
+      <set var="fecha_hora"><srai>ponerbarrabaja <srai>ADDITEM <get name="fecha"></get> IN <get var="hora_final"></get></srai></srai></set>
+
+      <set var="hora_valida"><srai>VALIDTIME <srai>quitarpuntos <star/></srai></srai></set>
+      <condition var="hora_valida">
+        <li value="yes">
+          <removefrommap>
+            <name>eventos</name>
+            <key><get var="fecha_hora"></get></key>
+          </removefrommap>
+          <removefrommap>
+            <name>evenper</name>
+            <key><get var="fecha_hora"></get></key>
+          </removefrommap>
+          <set var="tam_fechashora"><srai>COUNT <readkeys>fechahoras</readkeys></srai></set>
+          <condition var="tam_fechashora">
+            <li value="0"><set var="explicacion">No existe nada para esa fecha</set></li>
+            <li>
+              <set var="tam_value"><srai>COUNT <map name="fechahoras"><get name="fecha"></get></map></srai></set>
+              <condition var="tam_value">
+                <li value="1">
+                  <set var="explicacion">Evento borrado</set>
+                  <removefrommap>
+                    <name>fechahoras</name>
+                    <key><get name="fecha"></get></key>
+                  </removefrommap>
+                </li>
+                <li>
+                  <set var="pos_fechashora"><srai>FINDITEM <get var="hora_final"></get> IN <map name="fechahoras"><get name="fecha"></get></map></srai></set>
+                  <condition var="pos_fechashora">
+                    <li value="0"><set var="explicacion">No existe evento a esa hora</set></li>
+                    <li>
+                      <set var="nuevas_horas"><srai>REMOVEITEM <get var="pos_fechashora"></get> IN <map name="fechahoras"><get name="fecha"></get></map></srai></set>
+                      <modifymap>
+                        <name>fechahoras</name>
+                        <key><get name="fecha"></get></key>
+                        <value><get var="nuevas_horas"></get></value>
+                      </modifymap>
+                      <set var="explicacion">Evento borrado</set>
+                    </li>
+                  </condition>
+                </li>
+              </condition>
+            </li>
+          </condition>
+        </li>
+        <li value="no">
+          <set var="explicacion">La hora no es valida</set>
+        </li>
+      </condition>
+    </think>
+    <get var="explicacion"></get>
+  </template>
+</category>
+
+</topic>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                            FIN                            -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                   TOPIC LISTAR EVENTO                     -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<topic name = "listar_eventos">
+
+  <category>
+    <pattern>*</pattern>
+    <that>Dime la fecha para listar todos tus eventos</that>
+    <template>
+      <think>
+        <set var="fecha_valida"><srai>VALIDDATE <srai>quitarbarras <star/></srai></srai></set>
+        <condition var="fecha_valida">
+          <li value="yes">
+            <set var="existe"><srai>COUNT <readkeys>eventos</readkeys></srai></set>
+            <condition var="existe">
+              <li value="0">
+                <set var="explicacion">No hay eventos en ninguna fecha</set>
+              </li>
+              <li>
+                <set var="pos"><srai>FINDITEM <star/> IN <readkeys>fechahoras</readkeys></srai></set>
+                <condition var="pos">
+                  <li value="0">
+                    <set var="explicacion">No existe la fecha</set>
+                  </li>
+                  <li>
+                    <set var="fecha_a_buscar"><star/></set>
+                    <set var="tam"><srai>COUNT <map name="fechahoras"><star/></map></srai></set>
+                    <set var="sig"><srai>ITERATE <map name="fechahoras"><star/></map></srai></set>
+                    <!-- Buble de 1 a tam, uno en cada iter a la hora a buscar -->
+                    <condition var="sig">
+                      <li value="$">
+                        <set var="nombres_eventos"><srai>REMAIN <get var="nombres_eventos"></get></srai></set>
+                      </li>
+                      <li>
+                        <set var="fecha_hora_buscar"><srai>ponerbarrabaja <srai>ADDITEM <get var="fecha_a_buscar"></get> IN <get var="sig"></get></srai></srai></set>
+                        <set var="nombre_del_evento"><map name="eventos"><get var="fecha_hora_buscar"></get></map></set>
+                        <set var="nombres_eventos"><srai>ADDITEM <get var="nombres_eventos"></get> IN <get var="nombre_del_evento"></get></srai></set>
+                        <set var="sig"><srai>NEXT</srai></set>
+                        <loop/>
+                      </li>
+                    </condition>
+
+                  </li>
+                </condition>
+              </li>
+            </condition>
+          </li>
+          <li value="no">
+            <set var="explicacion">La hora no es valida</set>
+          </li>
+        </condition>
+      </think>
+      El día <star/> tienes <get var="tam"></get> eventos que son <get var="nombres_eventos"></get>
+    </template>
+  </category>
+
+</topic>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                            FIN                            -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                TOPIC CONTAR EVENTO                     -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<topic name = "contar_eventos">
+
+  <category>
+    <pattern>*</pattern>
+    <that>Dime la fecha para contar sus eventos</that>
+    <template>
+      <think>
+        <set var="fecha_valida"><srai>VALIDDATE <srai>quitarbarras <star/></srai></srai></set>
+        <condition var="fecha_valida">
+          <li value="yes">
+            <set var="existe"><srai>COUNT <readkeys>eventos</readkeys></srai></set>
+            <condition var="existe">
+              <li value="0">
+                <set var="explicacion">No hay eventos en ninguna fecha</set>
+              </li>
+              <li>
+                <set var="pos"><srai>FINDITEM <star/> IN <readkeys>fechahoras</readkeys></srai></set>
+                <condition var="pos">
+                  <li value="0">
+                    <set var="explicacion">No existe la fecha</set>
+                  </li>
+                  <li>
+                    <set var="num_eventos"><srai>COUNT <map name="fechahoras"><star/></map></srai></set>
+                    <set var="explicacion">Tienes <get var="num_eventos"></get> eventos el <star/></set>
+                  </li>
+                </condition>
+              </li>
+            </condition>
+          </li>
+          <li value="no">
+            <set var="explicacion">La hora no es valida</set>
+          </li>
+        </condition>
+      </think>
+      <get var="explicacion"></get>
+    </template>
+  </category>
+
+</topic>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                            FIN                            -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+</aiml>
